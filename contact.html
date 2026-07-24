@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Doctor Ville</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Changed Logo to Doctor Ville -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer transition-transform hover:scale-105">
+                    <i class="ph-fill ph-stethoscope text-brand-600 text-3xl"></i>
+                    <span class="font-black text-2xl tracking-tight text-brand-900">Doctor Ville</span>
+                </a>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-brand-600 focus:outline-none p-2">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">닥터빌이란</a>
+                    <a href="services.html" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">서비스 소개</a>
+                    <a href="contact.html" class="bg-brand-600 text-white hover:bg-brand-700 font-bold px-4 py-2 rounded-lg transition-colors shadow-sm">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="index.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">닥터빌이란</a>
+                <a href="services.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">서비스 소개</a>
+                <a href="contact.html" class="block px-3 py-3 rounded-md text-base font-bold text-white bg-brand-600">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-20 bg-slate-900 relative flex items-center min-h-[90vh]">
+        <!-- Full Screen Background with Overlay -->
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 py-12">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+                <!-- Left Text Side -->
+                <div class="text-center lg:text-left lg:w-5/12 fade-in-up">
+                    <span class="inline-block py-1.5 px-4 rounded-full bg-brand-500/20 text-brand-300 font-bold text-sm mb-6 border border-brand-500/30">
+                        Partnership & Contact
+                    </span>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                        성공적인 <br class="hidden lg:block"/><span class="text-brand-400">파트너십</span>을<br>시작하세요.
+                    </h1>
+                    <p class="text-slate-300 text-lg max-w-md mx-auto lg:mx-0 font-light leading-relaxed mb-10">
+                        닥터빌 서비스에 대한 상세한 단가표 안내 및 맞춤형 광고 제휴 문의를 남겨주시면 전문가가 확인 후 빠르게 연락드리겠습니다.
+                    </p>
+                    
+                    <div class="hidden lg:flex flex-col gap-6 border-t border-white/10 pt-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center backdrop-blur-md border border-white/10">
+                                <i class="ph-fill ph-headset text-brand-400 text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-sm font-medium mb-1">제휴 안내 및 문의 전담</p>
+                                <p class="text-white font-bold text-lg">마케팅팀 제휴 담당자</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Form Side -->
+                <div class="bg-white rounded-3xl p-8 md:p-12 w-full lg:w-7/12 shadow-2xl relative z-20 fade-in-up" style="transition-delay: 100ms;">
+                    <!-- Input Form -->
+                        <form id="inquiryForm" class="space-y-5" style="display: block;" onsubmit="submitForm(event)">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="company" class="block text-sm font-semibold text-slate-700 mb-1.5">소속(회사)명 <span class="text-brand-500">*</span></label>
+                                    <input type="text" id="company" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-colors text-sm bg-slate-50 focus:bg-white" placeholder="회사명">
+                                </div>
+                                <div>
+                                    <label for="name" class="block text-sm font-semibold text-slate-700 mb-1.5">담당자명 <span class="text-brand-500">*</span></label>
+                                    <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-colors text-sm bg-slate-50 focus:bg-white" placeholder="성함">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">이메일 <span class="text-brand-500">*</span></label>
+                                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-colors text-sm bg-slate-50 focus:bg-white" placeholder="ex) user@company.com">
+                            </div>
+
+                            <div>
+                                <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1.5">연락처</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-colors text-sm bg-slate-50 focus:bg-white" placeholder="ex) 010-0000-0000">
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-sm font-semibold text-slate-700 mb-1.5">문의 내용 <span class="text-brand-500">*</span></label>
+                                <textarea id="message" required rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-colors text-sm resize-none bg-slate-50 focus:bg-white" placeholder="문의하실 내용을 상세히 적어주세요."></textarea>
+                            </div>
+
+                            <div class="flex items-start gap-2 pt-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <input type="checkbox" id="privacy" required class="mt-0.5 rounded text-brand-500 focus:ring-brand-500 cursor-pointer">
+                                <label for="privacy" class="text-[11px] text-slate-500 leading-relaxed cursor-pointer">
+                                    <span class="font-bold text-slate-600">(필수)</span> 개인정보 수집 및 이용에 동의합니다. 수집된 정보는 문의 답변 및 관련 안내 목적으로만 사용되며, 목적 달성 후 지체 없이 파기됩니다.
+                                </label>
+                            </div>
+
+                            <button type="submit" class="w-full bg-slate-900 hover:bg-brand-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg mt-4 flex justify-center items-center gap-2">
+                                문의 접수하기 <i class="ph-bold ph-paper-plane-tilt text-lg"></i>
+                            </button>
+                        </form>
+                        
+                        <!-- Success Message -->
+                        <div id="successMessage" class="flex-col items-center justify-center py-16 space-y-5" style="display: none;">
+                            <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-2 mx-auto ring-8 ring-green-50/50">
+                                <i class="ph-bold ph-check text-5xl text-green-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-800 text-center">접수가 완료되었습니다</h3>
+                            <p class="text-slate-500 text-center leading-relaxed max-w-[250px] mx-auto">
+                                담당자가 내용을 확인한 후 기재해주신 연락처로 빠르게 회신드리겠습니다.
+                            </p>
+                            <div class="pt-6 w-full">
+                                <button type="button" onclick="resetForm()" class="w-full px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-colors">새로운 문의 작성하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center fade-in-up">
+                <a href="http://www.doctorville.co.kr" target="_blank" class="inline-flex items-center justify-center gap-2 text-slate-500 hover:text-brand-600 font-medium transition-colors">
+                    닥터빌 홈페이지 바로가기 <i class="ph-bold ph-arrow-up-right"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 py-12 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400">
+            <div class="flex justify-center items-center gap-2 mb-4">
+                <i class="ph-fill ph-stethoscope text-2xl text-slate-500"></i>
+                <span class="font-black text-2xl tracking-tight text-white">Doctor Ville</span>
+            </div>
+            <p class="text-sm mb-6 text-slate-400 font-light">의료 전문가에게 필요한 모든 컨텐츠가 모이는 곳</p>
+            <div class="w-24 h-px bg-slate-700 mx-auto mb-6"></div>
+            <p class="text-xs text-slate-500">&copy; 2026 Doctor Ville. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll('.fade-in-up');
+            // Check if elements are already in view on load
+            elements.forEach(el => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, 100);
+            });
+        });
+
+        // Form Submission Logic
+        function submitForm(e) {
+            e.preventDefault();
+            
+            // 1. 입력된 데이터 가져오기
+            const company = document.getElementById('company').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+
+            // 2. 전송 중 상태 표시 UI 처리 (중복 클릭 방지)
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = '전송 중... <i class="ph-bold ph-spinner animate-spin"></i>';
+            submitBtn.disabled = true;
+
+            // 3. 구글 스크립트 웹 앱 URL 적용
+            const scriptURL = 'https://script.google.com/macros/s/AKfycby4Uc6CVqNpiWTjKYNrR0pxy2wQYrANU23jeEXnpPPtG2SNtmHBTfJ-rCc6oTDIeqCWTg/exec';
+            
+            // 4. 전송할 데이터 폼 구성
+            const formData = new FormData();
+            formData.append('company', company);
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('message', message);
+
+            // 5. Fetch API로 구글 스프레드시트에 데이터 전송
+            fetch(scriptURL, { method: 'POST', body: formData})
+                .then(response => {
+                    // Hide the form and show the success message
+                    document.getElementById('inquiryForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'flex';
+                    
+                    // 버튼 원래 상태로 복구
+                    submitBtn.innerHTML = originalBtnHtml;
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('네트워크 오류로 접수에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+                    
+                    // 에러 발생 시 버튼 원래 상태로 복구
+                    submitBtn.innerHTML = originalBtnHtml;
+                    submitBtn.disabled = false;
+                });
+        }
+
+        function resetForm() {
+            // Reset form fields and toggle views back
+            document.getElementById('inquiryForm').reset();
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('inquiryForm').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
