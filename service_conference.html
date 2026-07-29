@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온/오프라인 컨퍼런스 - Doctor Ville</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Gallery Image Hover Effect */
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer transition-transform hover:scale-105">
+                    <img src="로고_컬러버젼.png" alt="Doctor Ville" class="h-7 sm:h-9 w-auto">
+                </a>
+                
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-brand-600 focus:outline-none p-2">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">닥터빌이란</a>
+                    
+                    <div class="relative group">
+                        <a href="service_platform.html" class="text-brand-600 font-bold border-b-2 border-brand-600 pb-1 flex items-center gap-1 py-4">
+                            서비스 소개 <i class="ph-bold ph-caret-down text-[10px]"></i>
+                        </a>
+                        <div class="absolute left-1/2 -translate-x-1/2 top-full w-[200px] bg-white rounded-2xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 p-3">
+                            <a href="service_platform.html" class="block px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors">플랫폼 광고</a>
+                            <a href="service_webinar.html" class="block px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-slate-50 rounded-lg transition-colors">웹 세미나</a>
+                            <a href="service_conference.html" class="block px-4 py-2.5 text-sm font-bold text-brand-600 bg-brand-50 rounded-lg transition-colors">온/오프라인 컨퍼런스</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="bg-brand-50 text-brand-700 hover:bg-brand-100 font-medium px-4 py-2 rounded-lg transition-colors">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full max-h-[85vh] overflow-y-auto">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="index.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">닥터빌이란</a>
+                
+                <div class="block">
+                    <button onclick="toggleMobileServices()" class="w-full flex items-center justify-between px-3 py-3 rounded-md text-base font-bold text-brand-600 bg-brand-50">
+                        서비스 소개 <i id="mobile-services-icon" class="ph-bold ph-caret-down transition-transform rotate-180"></i>
+                    </button>
+                    <div id="mobile-services-menu" class="bg-slate-50/50 rounded-xl p-2 mt-1 space-y-1 border border-slate-100">
+                        <a href="service_platform.html" class="block px-4 py-2.5 text-sm text-slate-600 hover:text-brand-600 bg-white rounded-lg border border-slate-100 shadow-sm mb-1">플랫폼 광고</a>
+                        <a href="service_webinar.html" class="block px-4 py-2.5 text-sm text-slate-600 hover:text-brand-600 bg-white rounded-lg border border-slate-100 shadow-sm mb-1">웹 세미나</a>
+                        <a href="service_conference.html" class="block px-4 py-2.5 text-sm font-bold text-brand-600 bg-white rounded-lg border border-brand-100 shadow-sm">온/오프라인 컨퍼런스</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-slate-900 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 bg-slate-900/85"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up relative z-10">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-rose-500/20 text-rose-300 font-bold text-sm mb-6 border border-rose-500/30">
+                Service 03
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">온/오프라인 행사 운영</h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-light">
+                의학 행사의 새로운 표준을 만드는 플랫폼, 컨퍼런스빌<br class="hidden md:block"/>성공적인 행사 개최를 위해 엠서클 전 조직이 함께합니다.
+            </p>
+        </div>
+    </header>
+
+    <section class="py-20 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">왜 컨퍼런스빌과 함께해야 하는가?</h2>
+                <div class="w-12 h-1 bg-rose-500 mx-auto rounded"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 fade-in-up">
+                <!-- Advantage 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-rose-50 rounded-xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-circles-three-plus text-3xl text-rose-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">전사 통합 인프라</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        닥터빌, 하이닥, 컨퍼런스빌로 구성된 엠서클 전사 조직이 플랫폼 기획, 홍보, 미디어, 현장 운영, 디자인까지 행사의 전 영역을 하나의 통합 체계로 완벽하게 제공합니다.
+                    </p>
+                </div>
+                <!-- Advantage 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-megaphone text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">강력한 타겟 홍보 (Delegate Boosting)</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        No.1 의사 포털 닥터빌의 4만 회원 대상 배너/EDM 타겟 홍보는 물론, 하이닥 보도자료 및 외부 매체(포털) 송출을 연계하여 압도적인 참석자 모객을 지원합니다.
+                    </p>
+                </div>
+                <!-- Advantage 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-medal text-3xl text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">검증된 경험과 신뢰</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        6년간 400건 이상의 행사와 10건 이상의 대규모 국제학술대회를 운영했습니다. 다수의 학회와 기관이 3~4년 연속으로 컨퍼런스빌을 선택하고 있습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Online Event -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 fade-in-up mb-32">
+                <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-broadcast text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">온라인 행사 (Online Event)</h3>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                        닥터빌의 강력한 IT 인프라와 4만 의사 회원 네트워크를 바탕으로 시·공간의 제약 없이 확산력 높은 온라인 생중계를 제공합니다.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">안정적인 고화질 스트리밍</h4>
+                                <p class="text-sm text-slate-500 mt-1">대규모 접속자 환경에서도 끊김 없는 쾌적한 시청 환경 제공 및 전용 플랫폼 지원</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">양방향 소통 채널 운영</h4>
+                                <p class="text-sm text-slate-500 mt-1">실시간 Q&A, 온라인 투표, 평점 연동 등 참가자 인게이지먼트 극대화</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                    <div class="bg-blue-50 rounded-2xl p-4 shadow-xl border border-blue-100 h-[380px] flex items-center justify-center relative overflow-hidden">
+                        <div class="w-[85%] bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+                            <div class="bg-slate-900 w-full h-48 relative flex items-center justify-center group cursor-pointer">
+                                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1576091160550-2173ff9e5eb3?auto=format&fit=crop&w=800&q=80')] opacity-50 bg-cover bg-center"></div>
+                                <i class="ph-fill ph-play-circle text-white/80 text-6xl group-hover:scale-110 transition-transform relative z-10"></i>
+                                <div class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded animate-pulse z-10">LIVE</div>
+                            </div>
+                            <div class="p-4 bg-white flex justify-between items-center">
+                                <div class="space-y-2 w-2/3">
+                                    <div class="w-full h-3 bg-slate-200 rounded"></div>
+                                    <div class="w-3/4 h-3 bg-slate-200 rounded"></div>
+                                </div>
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 border-2 border-white z-20"></div>
+                                    <div class="w-8 h-8 rounded-full bg-blue-200 border-2 border-white z-10"></div>
+                                    <div class="w-8 h-8 rounded-full bg-blue-300 border-2 border-white z-0 flex items-center justify-center text-[10px] text-white font-bold">+1K</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offline Event -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 fade-in-up mb-32">
+                <div class="w-full lg:w-1/2">
+                    <div class="bg-emerald-50 rounded-2xl p-4 shadow-xl border border-emerald-100 h-[380px] flex items-center justify-center relative overflow-hidden">
+                        <!-- ID Badge -->
+                        <div class="w-32 h-48 bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col items-center p-3 relative transform -rotate-12 hover:rotate-0 transition-transform duration-500 z-10">
+                            <div class="w-10 h-2 bg-slate-300 rounded-full mb-4 absolute -top-4 shadow-sm"></div>
+                            <div class="w-full h-10 bg-emerald-600 rounded text-center text-white text-[10px] font-bold flex items-center justify-center mb-3 leading-tight">Medical<br>Symposium</div>
+                            <div class="w-12 h-12 rounded-full bg-slate-100 border-2 border-emerald-100 mb-3 flex items-center justify-center">
+                                <i class="ph-fill ph-user text-slate-300 text-2xl"></i>
+                            </div>
+                            <div class="w-16 h-2 bg-slate-800 rounded mb-1.5"></div>
+                            <div class="w-12 h-1.5 bg-slate-400 rounded"></div>
+                        </div>
+                        <!-- Ticket -->
+                        <div class="w-48 h-24 bg-slate-800 rounded-xl shadow-2xl flex items-center p-0 overflow-hidden transform translate-y-12 translate-x-8 rotate-6 border border-slate-700">
+                            <div class="w-2/3 h-full px-4 flex flex-col justify-center">
+                                <div class="text-emerald-400 text-[10px] font-bold tracking-widest mb-1">VIP ACCESS</div>
+                                <div class="text-white font-black text-sm leading-tight">Offline<br>Conference</div>
+                            </div>
+                            <div class="w-1/3 h-full border-l-2 border-dashed border-slate-600 flex items-center justify-center bg-slate-900">
+                                <i class="ph-bold ph-qr-code text-emerald-500 text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-buildings text-4xl text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">오프라인 행사 (Offline Event)</h3>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                        호텔 및 전문 행사장 대관부터 키비주얼 디자인, 등록 데스크 현장 운영까지 연수강좌 및 학술대회의 모든 과정을 완벽하게 대행합니다.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-emerald-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">최적의 장소 섭외 및 공간 기획</h4>
+                                <p class="text-sm text-slate-500 mt-1">행사 규모와 성격에 맞는 행사장 섭외 및 무대/포토월 등 시각물 기획</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-emerald-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">전문 인력 기반의 현장 총괄 운영</h4>
+                                <p class="text-sm text-slate-500 mt-1">사전/현장 등록 시스템, 의전, 장비 오퍼레이팅 등 숙련된 현장 스태프 지원</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hybrid Event -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 fade-in-up">
+                <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                    <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="ph-duotone ph-arrows-merge text-4xl text-rose-600"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4">하이브리드 행사 (Hybrid Event)</h3>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                        오프라인의 생생한 현장감과 온라인의 뛰어난 접근성을 완벽하게 결합하여 대규모 국제학술대회 및 심포지엄의 영향력을 극대화하는 솔루션입니다.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-rose-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">온/오프라인 동시 운영 통합 관리</h4>
+                                <p class="text-sm text-slate-500 mt-1">현장 강연을 전문 촬영팀이 닥터빌 플랫폼으로 지연 없이 동시 생중계 송출</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="mt-0.5"><i class="ph-fill ph-check-circle text-rose-500 text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">글로벌 연자 연동 및 자동화 시스템</h4>
+                                <p class="text-sm text-slate-500 mt-1">Zoom 연동을 통한 해외 연자 실시간 참여 및 AI 번역·자막 송출 지원</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                    <div class="bg-rose-50 rounded-2xl p-4 shadow-xl border border-rose-100 h-[380px] flex items-center justify-center relative overflow-hidden">
+                        <!-- Background Stage Vibe -->
+                        <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-slate-900 to-transparent opacity-10"></div>
+                        
+                        <!-- Offline Element -->
+                        <div class="absolute w-[90%] h-48 bg-slate-800 rounded-xl shadow-2xl border border-slate-700 bottom-10 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80')] opacity-40 bg-cover bg-center"></div>
+                            <div class="flex items-center gap-3 relative z-10 text-white">
+                                <i class="ph-fill ph-users-three text-4xl"></i>
+                                <span class="font-black text-xl tracking-wider">OFFLINE STAGE</span>
+                            </div>
+                        </div>
+
+                        <!-- Online Element -->
+                        <div class="absolute top-8 right-8 w-32 h-48 bg-white border-[4px] border-slate-900 rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20 flex flex-col overflow-hidden transform rotate-6 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-10 h-1 bg-slate-900 rounded-full mx-auto mt-1.5 mb-1.5"></div>
+                            <div class="flex-1 bg-slate-100 flex flex-col">
+                                <div class="h-20 bg-rose-600 flex items-center justify-center relative">
+                                    <div class="absolute top-1 left-1 bg-white text-rose-600 text-[8px] font-black px-1.5 rounded animate-pulse">LIVE</div>
+                                    <i class="ph-fill ph-play-circle text-white/80 text-2xl"></i>
+                                </div>
+                                <div class="p-2 space-y-1.5">
+                                    <div class="w-full h-2 bg-slate-300 rounded"></div>
+                                    <div class="w-2/3 h-2 bg-slate-300 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Connecting Line -->
+                        <svg class="absolute inset-0 w-full h-full z-10 pointer-events-none" style="filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));">
+                            <path d="M 180 200 Q 250 100 300 120" fill="transparent" stroke="#f43f5e" stroke-width="3" stroke-dasharray="6 6" class="animate-[dash_2s_linear_infinite]" />
+                        </svg>
+                        <style>
+                            @keyframes dash {
+                                to { stroke-dashoffset: -24; }
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl font-black text-slate-900 mb-4">행사 운영 갤러리</h2>
+                <p class="text-slate-500">생생한 학술대회 및 심포지엄 운영 현장입니다. 사진을 클릭하면 크게 볼 수 있습니다.</p>
+            </div>
+            
+            <!-- Photo Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 fade-in-up">
+                <div class="gallery-item aspect-video md:col-span-2 md:row-span-2" onclick="openLightbox('KINGCA 2024.jpg')">
+                    <img src="KINGCA 2024.jpg" alt="KINGCA 2024" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x600/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-4xl mb-2"></i>
+                        <span class="text-white font-bold">KINGCA WEEK 2024</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item aspect-square" onclick="openLightbox('KSP2024(2).jpg')">
+                    <img src="KSP2024(2).jpg" alt="KSP 2024 Registration" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-3xl mb-1"></i>
+                    </div>
+                </div>
+                
+                <div class="gallery-item aspect-square" onclick="openLightbox('KSP2024.jpg')">
+                    <img src="KSP2024.jpg" alt="KSP 2024 Hall" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-3xl mb-1"></i>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-video md:col-span-2" onclick="openLightbox('KSSMN 2024.png')">
+                    <img src="KSSMN 2024.png" alt="KSSMN 2024" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-4xl mb-2"></i>
+                        <span class="text-white font-bold">KSSMN 2024</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-video md:col-span-2" onclick="openLightbox('대웅 심포지엄 (2).jpg')">
+                    <img src="대웅 심포지엄 (2).jpg" alt="Daewoong Symposium" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-4xl mb-2"></i>
+                        <span class="text-white font-bold">대웅 심포지엄</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-video md:col-span-2 lg:col-span-1" onclick="openLightbox('대웅 심포지엄.jpg')">
+                    <img src="대웅 심포지엄.jpg" alt="Daewoong Symposium Main" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-3xl mb-1"></i>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-square lg:aspect-auto lg:row-span-2" onclick="openLightbox('대웅 제작물 (2).jpg')">
+                    <img src="대웅 제작물 (2).jpg" alt="Production Item" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x800/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-3xl mb-1"></i>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-video md:col-span-2" onclick="openLightbox('대웅 제작물.jpg')">
+                    <img src="대웅 제작물.jpg" alt="Production Item 2" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x400/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-4xl mb-2"></i>
+                        <span class="text-white font-bold">제작물 및 포토월</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item aspect-video md:col-span-1" onclick="openLightbox('디시젠 (2).jpg')">
+                    <img src="디시젠 (2).jpg" alt="DCGEN Registration" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x300/eeeeee/999999?text=Image+Not+Found'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10">
+                        <i class="ph-bold ph-magnifying-glass-plus text-white text-3xl mb-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-slate-900/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-6 right-8 text-white/50 hover:text-white text-5xl focus:outline-none transition-colors">&times;</button>
+        <div class="p-4 w-full h-full flex items-center justify-center" onclick="closeLightbox()">
+            <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+        </div>
+    </div>
+
+    <section class="pb-24 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="pt-16 border-t border-slate-200 fade-in-up">
+                <div class="text-center mb-10">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">Our Partners</h3>
+                    <p class="text-slate-500 font-medium">컨퍼런스빌을 신뢰하는 주요 학회 및 병원 파트너입니다.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                    <!-- Academic Societies -->
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한병리학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한위암학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한외과대사영양학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한근감소증학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한정형외과<br>컴퓨터수술학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한심장학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한골대사학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">한국지질·동맥경화학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한간학회</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-blue-700 transition-colors text-center leading-tight">대한산부인과학회</span>
+                    </div>
+
+                    <!-- Hospitals -->
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-emerald-700 transition-colors text-center leading-tight">서울대학교병원</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-emerald-700 transition-colors text-center leading-tight">고려대학교의료원</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-emerald-700 transition-colors text-center leading-tight">삼성서울병원</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-emerald-700 transition-colors text-center leading-tight">세브란스병원</span>
+                    </div>
+                    <div class="flex items-center justify-center h-[72px] bg-white rounded-xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all duration-300 group cursor-default p-2">
+                        <span class="font-bold text-sm text-slate-500 group-hover:text-emerald-700 transition-colors text-center leading-tight">서울아산병원</span>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <p class="text-xs text-slate-400">외 다수의 학회 및 종합병원과 함께 성공적인 행사를 만들어가고 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="py-24 text-center bg-white fade-in-up border-t border-slate-100">
+        <a href="contact.html" class="inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-brand-600 text-white font-bold py-4 px-10 rounded-full shadow-2xl transition-all duration-300 hover:-translate-y-1 group">
+            닥터빌 컨퍼런스 문의하기 <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+        </a>
+    </div>
+
+    <footer class="bg-slate-900 py-12 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400">
+            <div class="flex justify-center items-center mb-5">
+                <a href="index.html" class="inline-block bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-700/50">
+                    <img src="로고_컬러버젼.png" alt="Doctor Ville" class="h-6 sm:h-8 w-auto">
+                </a>
+            </div>
+            <p class="text-sm mb-6 text-slate-400 font-light">의료 전문가에게 필요한 모든 컨텐츠가 모이는 곳</p>
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="index.html" class="text-slate-400 hover:text-white transition-colors text-sm">닥터빌이란</a>
+                <a href="service_platform.html" class="text-slate-400 hover:text-white transition-colors text-sm">서비스 소개</a>
+                <a href="contact.html" class="text-slate-400 hover:text-white transition-colors text-sm">제휴 문의</a>
+            </div>
+            <div class="w-24 h-px bg-slate-700 mx-auto mb-6"></div>
+            <p class="text-xs text-slate-500">&copy; 2026 Doctor Ville. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function toggleMobileServices() {
+            var menu = document.getElementById('mobile-services-menu');
+            var icon = document.getElementById('mobile-services-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            const modal = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = src;
+            modal.classList.remove('hidden');
+            // Allow display block to apply before changing opacity
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Match transition duration
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle Escape key to close lightbox
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+        });
+
+        // Intersection Observer for Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
